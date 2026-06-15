@@ -1,0 +1,114 @@
+{
+  "winrate_holdem": {
+    "Pro": {
+      "profile": "bot",
+      "chips": 129,
+      "bb_won": 64.5,
+      "bb_per_100": 6.45
+    },
+    "Tight": {
+      "profile": "human",
+      "chips": 86,
+      "bb_won": 43.0,
+      "bb_per_100": 4.3
+    },
+    "Loose": {
+      "profile": "human",
+      "chips": -215,
+      "bb_won": -107.5,
+      "bb_per_100": -10.75
+    },
+    "_meta": {
+      "hands": 1000,
+      "game": "holdem",
+      "showdown_rate": 0.866
+    }
+  },
+  "winrate_draw": {
+    "Pro": {
+      "profile": "bot",
+      "chips": -3685,
+      "bb_won": -1842.5,
+      "bb_per_100": -184.25
+    },
+    "Tight": {
+      "profile": "human",
+      "chips": 5346,
+      "bb_won": 2673.0,
+      "bb_per_100": 267.3
+    },
+    "Loose": {
+      "profile": "human",
+      "chips": -1661,
+      "bb_won": -830.5,
+      "bb_per_100": -83.05
+    },
+    "_meta": {
+      "hands": 1000,
+      "game": "draw",
+      "showdown_rate": 0.803
+    }
+  },
+  "detect_static": {
+    "sessions": 682,
+    "tp": 220,
+    "fp": 15,
+    "tn": 447,
+    "fn": 0,
+    "accuracy": 0.978,
+    "bot_recall": 1.0,
+    "precision": 0.936,
+    "human_false_positive_rate": 0.032
+  },
+  "detect_adaptive": {
+    "sessions": 681,
+    "tp": 217,
+    "fp": 16,
+    "tn": 445,
+    "fn": 3,
+    "accuracy": 0.972,
+    "bot_recall": 0.986,
+    "precision": 0.931,
+    "human_false_positive_rate": 0.035,
+    "final_cv_threshold": 0.41
+  },
+  "jitter_sweep": [
+    {
+      "jitter": 0.0,
+      "bot_recall": 1.0,
+      "human_false_positive_rate": 0.034,
+      "accuracy": 0.977
+    },
+    {
+      "jitter": 0.1,
+      "bot_recall": 1.0,
+      "human_false_positive_rate": 0.037,
+      "accuracy": 0.975
+    },
+    {
+      "jitter": 0.2,
+      "bot_recall": 1.0,
+      "human_false_positive_rate": 0.036,
+      "accuracy": 0.975
+    },
+    {
+      "jitter": 0.3,
+      "bot_recall": 0.989,
+      "human_false_positive_rate": 0.037,
+      "accuracy": 0.972
+    },
+    {
+      "jitter": 0.5,
+      "bot_recall": 0.722,
+      "human_false_positive_rate": 0.044,
+      "accuracy": 0.881
+    },
+    {
+      "jitter": 0.8,
+      "bot_recall": 0.076,
+      "human_false_positive_rate": 0.052,
+      "accuracy": 0.666
+    }
+  ],
+  "_runtime_sec": 1244.1
+}
