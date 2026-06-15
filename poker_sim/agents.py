@@ -169,3 +169,41 @@ class LooseHumanAgent(BaseAgent):
         if self.rng.random() < 0.12:
             t += self.rng.uniform(0.8, 5.0)
         return t + 0.15
+
+
+class DisruptiveAgent(BaseAgent):
+    """A 'disruptive' maniac: shoves and pot-raises far more than equity
+    justifies, to put opponents under constant pressure and inflate variance.
+
+    It is still automated, so its timing signature is regular (detectable).
+    The point of testing it in a cash game is to see whether disruption is
+    profitable once stacks are persistent and all-ins / side pots are in play.
+    """
+
+    profile = "bot"
+
+    def __init__(self, name="Disruptor", rng=None, iters=20, shove_freq=0.6):
+        super().__init__(name, rng)
+        self.iters = iters
+        self.shove_freq = shove_freq
+
+    def act(self, ctx: Context) -> Action:
+        eq = self.equity(ctx, self.iters)
+        r = self.rng.random()
+        pot_size = max(ctx.min_raise, ctx.pot)
+
+        if ctx.to_call == 0:
+            if r < self.shove_freq or eq > 0.5:
+                return ("raise", min(pot_size, ctx.stack))
+            return ("check", 0)
+
+        # facing a bet: fold only the very worst, otherwise raise/call aggressively
+        if eq < 0.15 and r < 0.5:
+            return ("fold", 0)
+        if r < self.shove_freq * 0.7 or eq > 0.55:
+            return ("raise", min(pot_size, ctx.stack))
+        return ("call", min(ctx.to_call, ctx.stack))
+
+    def decision_time(self) -> float:
+        # regular, machine-like timing -> a clear tell for the detector
+        return abs(self.rng.gauss(0.8, 0.06)) + 0.05
