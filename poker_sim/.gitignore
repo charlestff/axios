@@ -1,0 +1,3 @@
+__pycache__/
+*.pyc
+poker_sim_results.json
