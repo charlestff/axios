@@ -83,3 +83,53 @@ threshold to compensate pays for it in a rising human false-positive rate
    approaches.
 3. Winning at the game still requires a *correctly calibrated* model — the draw
    result shows a miscalibrated agent loses money regardless of automation.
+
+---
+
+# Cash-game test with a disruptive (maniac) agent
+
+`python -m poker_sim.cash_experiments` — 4-handed cash game, persistent 100bb
+stacks, rebuy on bust, 3000 hands per variant. Table: **Disruptor** (hyper-
+aggressive bot), **Pro** (equity bot), **Tight** and **Loose** (human-like).
+Raw numbers in `poker_cash_results.json`. Engine validated zero-sum per hand
+(side-pot accounting test).
+
+## Texas Hold'em (2 cards)
+
+| Agent | profile | bb/100 | std/hand | max drawdown (bb) | rebuys |
+|-------|---------|-------:|---------:|------------------:|-------:|
+| Disruptor | bot | **−178.8** | 20.8 | 5468 | **53** |
+| Pro | bot | **+144.8** | 25.3 | 706 | 1 |
+| Tight | human | +70.0 | 12.9 | 185 | 0 |
+| Loose | human | −36.0 | 15.6 | 1652 | 11 |
+
+## Five Card Draw (5 cards)
+
+| Agent | profile | bb/100 | std/hand | max drawdown (bb) | rebuys |
+|-------|---------|-------:|---------:|------------------:|-------:|
+| Disruptor | bot | **−436.6** | 45.2 | 13200 | **131** |
+| Pro | bot | −23.1 | 63.0 | 2908 | 9 |
+| Tight | human | **+640.9** | 78.7 | 1569 | 0 |
+| Loose | human | −181.3 | 38.7 | 64 reb. | 64 |
+
+## Detection of the bots in the cash game
+
+| variant | accuracy | bot recall | human FPR |
+|---------|---------:|-----------:|----------:|
+| Hold'em | 0.980 | **1.000** | 0.039 |
+| Draw    | 0.982 | **1.000** | 0.036 |
+
+## Findings
+
+1. **Disruption is strongly −EV.** With persistent stacks, the maniac bleeds
+   178–437 bb/100 and busts (rebuys) **53–131 times** in 3000 hands, with
+   enormous drawdowns. The disciplined players harvest those chips: in Hold'em
+   the Pro runs at +145 bb/100 with a single rebuy. Aggression that is not
+   backed by hand strength simply transfers a stack to whoever waits for it.
+2. **Disruption does not help evade detection — it hurts.** Both bots are caught
+   at **100% recall**; the maniac's machine-regular timing flags it just like
+   any bot, and its wildly anomalous action frequency (constant shoving) is an
+   *extra* signal, not a disguise. Playing disruptively makes an automated agent
+   *more* conspicuous, not less.
+3. The draw variant again shows the calibration caveat (Pro slightly −EV, tight
+   value-only play crushes), consistent with the static-stack results above.

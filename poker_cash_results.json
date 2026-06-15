@@ -1,0 +1,101 @@
+{
+  "cash_holdem": {
+    "Disruptor": {
+      "profile": "bot",
+      "net_bb": -5363.5,
+      "bb_per_100": -178.78,
+      "std_bb_per_hand": 20.83,
+      "max_drawdown_bb": 5468.5,
+      "rebuys": 53
+    },
+    "Pro": {
+      "profile": "bot",
+      "net_bb": 4343.5,
+      "bb_per_100": 144.78,
+      "std_bb_per_hand": 25.31,
+      "max_drawdown_bb": 706.0,
+      "rebuys": 1
+    },
+    "Tight": {
+      "profile": "human",
+      "net_bb": 2101.0,
+      "bb_per_100": 70.03,
+      "std_bb_per_hand": 12.93,
+      "max_drawdown_bb": 185.0,
+      "rebuys": 0
+    },
+    "Loose": {
+      "profile": "human",
+      "net_bb": -1081.0,
+      "bb_per_100": -36.03,
+      "std_bb_per_hand": 15.62,
+      "max_drawdown_bb": 1652.0,
+      "rebuys": 11
+    },
+    "_meta": {
+      "hands": 3000,
+      "big_blind": 2
+    },
+    "_detection": {
+      "sessions": 715,
+      "tp": 356,
+      "fp": 14,
+      "tn": 345,
+      "fn": 0,
+      "accuracy": 0.98,
+      "bot_recall": 1.0,
+      "precision": 0.962,
+      "human_false_positive_rate": 0.039
+    }
+  },
+  "cash_draw": {
+    "Disruptor": {
+      "profile": "bot",
+      "net_bb": -13098.5,
+      "bb_per_100": -436.62,
+      "std_bb_per_hand": 45.2,
+      "max_drawdown_bb": 13200.5,
+      "rebuys": 131
+    },
+    "Pro": {
+      "profile": "bot",
+      "net_bb": -691.5,
+      "bb_per_100": -23.05,
+      "std_bb_per_hand": 63.01,
+      "max_drawdown_bb": 2908.5,
+      "rebuys": 9
+    },
+    "Tight": {
+      "profile": "human",
+      "net_bb": 19228.0,
+      "bb_per_100": 640.93,
+      "std_bb_per_hand": 78.69,
+      "max_drawdown_bb": 1569.5,
+      "rebuys": 0
+    },
+    "Loose": {
+      "profile": "human",
+      "net_bb": -5438.0,
+      "bb_per_100": -181.27,
+      "std_bb_per_hand": 38.66,
+      "max_drawdown_bb": 6462.5,
+      "rebuys": 64
+    },
+    "_meta": {
+      "hands": 3000,
+      "big_blind": 2
+    },
+    "_detection": {
+      "sessions": 493,
+      "tp": 246,
+      "fp": 9,
+      "tn": 238,
+      "fn": 0,
+      "accuracy": 0.982,
+      "bot_recall": 1.0,
+      "precision": 0.965,
+      "human_false_positive_rate": 0.036
+    }
+  },
+  "_runtime_sec": 235.6
+}
