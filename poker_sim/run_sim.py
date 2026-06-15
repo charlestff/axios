@@ -13,7 +13,9 @@ import argparse
 import json
 import random
 
-from .agents import LooseHumanAgent, ProAgent, TightHumanAgent
+from .agents import DisruptiveAgent, LooseHumanAgent, ProAgent, TightHumanAgent
+from .cashgame import CashGame
+from .detector import DetectionReport, StaticDetector
 from .simulation import jitter_sweep, run_detection, run_winrate
 
 
@@ -49,6 +51,34 @@ def cmd_sweep(args):
               f"{r['human_false_positive_rate']:>7.3f} {r['accuracy']:>9.3f}")
 
 
+def cmd_cash(args):
+    """Cash game (persistent stacks, rebuys, side pots) for holdem or draw."""
+    r = random.Random(args.seed)
+    agents = [TightHumanAgent("Tight", rng=random.Random(r.random() * 1e9), iters=25),
+              LooseHumanAgent("Loose", rng=random.Random(r.random() * 1e9), iters=25),
+              ProAgent("Pro", rng=random.Random(r.random() * 1e9), iters=25)]
+    if args.disruptor:
+        agents.insert(0, DisruptiveAgent("Disruptor",
+                                         rng=random.Random(r.random() * 1e9), iters=25))
+    game = CashGame(agents, buyin_bb=args.buyin, game=args.game, rng=random.Random(args.seed))
+    behavior = []
+    stats = game.play(args.hands, behavior_log=behavior)
+    out = stats.summary(agents, game.bb)
+
+    # behavioural detection over the same session
+    buffers = {i: [] for i in range(len(agents))}
+    report = DetectionReport()
+    det = StaticDetector()
+    for seat, t, _a in behavior:
+        buffers[seat].append(t)
+        if len(buffers[seat]) >= args.batch:
+            label, _ = det.predict(buffers[seat])
+            report.add(agents[seat].profile, label)
+            buffers[seat] = []
+    out["_detection"] = report.as_dict()
+    print(json.dumps(out, indent=2))
+
+
 def main(argv=None):
     p = argparse.ArgumentParser(description="Poker strategy-vs-detection simulator")
     sub = p.add_subparsers(dest="cmd", required=True)
@@ -67,6 +97,12 @@ def main(argv=None):
     d.set_defaults(func=cmd_detect)
 
     s = sub.add_parser("sweep", parents=[common]); s.set_defaults(func=cmd_sweep)
+
+    c = sub.add_parser("cash", parents=[common],
+                       help="cash game: --game holdem (2 cartas) or draw (5 cartas)")
+    c.add_argument("--buyin", type=int, default=100, help="buy-in in big blinds")
+    c.add_argument("--disruptor", action="store_true", help="add a disruptive maniac")
+    c.set_defaults(func=cmd_cash)
 
     args = p.parse_args(argv)
     args.func(args)

@@ -56,6 +56,11 @@ python -m poker_sim.run_sim detect  --hands 3000            # static detector
 python -m poker_sim.run_sim detect  --hands 3000 --jitter 0.3 --adaptive
 python -m poker_sim.run_sim sweep   --hands 2500            # cat-and-mouse curve
 
+# cash game (persistent stacks, rebuys, side pots) -- both variants
+python -m poker_sim.run_sim cash --game holdem --hands 3000             # 2 cartas
+python -m poker_sim.run_sim cash --game draw   --hands 3000             # 5 cartas
+python -m poker_sim.run_sim cash --game holdem --hands 3000 --disruptor # + maniac
+
 # everything at once, writes poker_sim_results.json
 python -m poker_sim.experiments
 
